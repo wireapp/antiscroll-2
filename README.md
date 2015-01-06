@@ -1,7 +1,7 @@
 antiscroll-2
 ============
 
-Unofficial successor [Antiscroll](https://github.com/LearnBoost/antiscroll) with the following benefits:
+Unofficial successor of [Antiscroll](https://github.com/LearnBoost/antiscroll) with the following benefits:
 
 - Release versions
 - Bower support
