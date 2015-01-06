@@ -1,0 +1,42 @@
+{
+  "name": "antiscroll-2",
+  "main": [
+    "antiscroll.css",
+    "antiscroll.js"
+  ],
+  "ignore": [
+    ".gitignore",
+    ".idea",
+    "assets",
+    "bower.json",
+    "bower_components",
+    "config",
+    "demo",
+    "Gruntfile.js",
+    "index.html",
+    "lib",
+    "nbproject",
+    "node_modules",
+    "package.json",
+    "README.md",
+    "test"
+  ],
+  "dependencies": {
+    "jquery": "~2.1",
+    "jquery-mousewheel": "~3.1"
+  },
+  "devDependencies": {
+    "lesshat": "3.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/welovecoding/antiscroll-2"
+  },
+  "keywords": [
+    "antiscroll",
+    "jquery",
+    "mac-osx",
+    "plugin",
+    "scrollbars"
+  ]
+}
