@@ -244,10 +244,6 @@
       return false;
     };
 
-    var pane = this.pane,
-            move = $.proxy(this, 'mousemove'),
-            self = this;
-
     $(this.el[0].ownerDocument)
             .mousemove(move)
             .mouseup(function () {
@@ -265,10 +261,9 @@
   /**
    * Show scrollbar.
    * 
-   * @param {type} duration
    * @returns {undefined}
    */
-  Scrollbar.prototype.show = function (duration) {
+  Scrollbar.prototype.show = function () {
     if (!this.shown && this.update()) {
       this.el.addClass('antiscroll-scrollbar-shown');
       if (this.hiding) {
@@ -349,12 +344,10 @@
    * Called upon container mousewheel.
    * 
    * @param {type} ev
-   * @param {type} delta
    * @param {type} x
-   * @param {type} y
    * @returns {Boolean}
    */
-  Scrollbar.Horizontal.prototype.mousewheel = function (ev, delta, x, y) {
+  Scrollbar.Horizontal.prototype.mousewheel = function (ev, x) {
     if ((x < 0 && 0 === this.pane.inner.get(0).scrollLeft) ||
             (x > 0 && (this.innerEl.scrollLeft + Math.ceil(this.pane.el.width())
                     === this.innerEl.scrollWidth))) {
