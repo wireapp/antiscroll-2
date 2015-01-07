@@ -8,4 +8,5 @@ Unofficial successor of [Antiscroll](https://github.com/LearnBoost/antiscroll) w
 - Sourcemap files
 - Stylesheets written in Less
 - Cross-browser support using [LESS Hat](https://github.com/madebysource/lesshat)
+- Support for option: `autoWrap`
 - Support for option: `marginTop`
