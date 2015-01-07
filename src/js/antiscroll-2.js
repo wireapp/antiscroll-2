@@ -11,6 +11,13 @@
       var wrapperElement = this;
       var $wrapperElement = $(wrapperElement);
 
+      // Apply OS X like scrollbars not on Mac OS (because they have them already)
+      if (options.notMac) {
+        if (navigator.appVersion.indexOf('Mac') > -1) {
+          return;
+        }
+      }
+
       if (options.autoWrap) {
         // Switch elements because wrapper element is inner element
         $wrapperElement.parent().addClass('antiscroll-wrap');
