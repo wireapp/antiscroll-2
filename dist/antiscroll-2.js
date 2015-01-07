@@ -244,6 +244,10 @@
       return false;
     };
 
+    // make scrollbar draggable
+    var move = $.proxy(this, 'mousemove');
+    var self = this;
+
     $(this.el[0].ownerDocument)
             .mousemove(move)
             .mouseup(function () {
