@@ -8,11 +8,22 @@
    */
   $.fn.antiscroll = function (options) {
     return this.each(function () {
-      if ($(this).data('antiscroll')) {
-        $(this).data('antiscroll').destroy();
+      var wrapperElement = this;
+      var $wrapperElement = $(wrapperElement);
+
+      if (options.autoWrap) {
+        // Switch elements because wrapper element is inner element
+        $wrapperElement.parent().addClass('antiscroll-wrap');
+        $wrapperElement.addClass('antiscroll-inner');
+        $wrapperElement = $wrapperElement.parent();
+        wrapperElement = $wrapperElement.get();
       }
 
-      $(this).data('antiscroll', new $.Antiscroll(this, options));
+      if ($wrapperElement.data('antiscroll')) {
+        $wrapperElement.data('antiscroll').destroy();
+      }
+
+      $wrapperElement.data('antiscroll', new $.Antiscroll(wrapperElement, options));
     });
   };
 

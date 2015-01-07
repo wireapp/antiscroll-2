@@ -9,11 +9,11 @@
     <script src="bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
     <!-- Antiscroll 2 -->
     <link rel="stylesheet" href="dist/antiscroll-2.css" />
-    <script src="dist/antiscroll-2.min.js"></script>
-    <!--<script src="src/js/antiscroll-2.js"></script>-->
+    <!--<script src="dist/antiscroll-2.min.js"></script>-->
+    <script src="src/js/antiscroll-2.js"></script>
     <!-- Demo page -->
     <style>
-      .test-container {
+      #container {
         background-color: beige;
         height: 400px;
         overflow: scroll;
@@ -21,8 +21,9 @@
     </style>
     <script>
       $(window).load(function () {
-        $('.antiscroll-wrap').antiscroll({
+        $('#container').antiscroll({
           autoHide: false,
+          autoWrap: true,
           marginTop: 10,
           padding: 10
         });
@@ -31,8 +32,8 @@
   </head>
   <body>
     <h2>antiscroll-2 demo</h2>
-    <div class="test-container-wrapper antiscroll-wrap">
-      <div class="test-container antiscroll-inner">
+    <div id="wrapper">
+      <div id="container">
         <ul>
           <li>Aletha</li>
           <li>Alex</li>
