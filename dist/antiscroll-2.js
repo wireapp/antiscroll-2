@@ -72,7 +72,7 @@
   }
 
   /**
-   * refresh scrollbars
+   * Refresh scrollbars
    *
    * @api public
    */
@@ -101,6 +101,8 @@
         this.vertical.update();
       }
     }
+
+    return 'Scrollbars have been refreshed.';
   };
 
   /**
@@ -318,6 +320,10 @@
    * @returns {Boolean}
    */
   Scrollbar.Horizontal.prototype.update = function () {
+    if (this.pane.options.debug) {
+      console.debug('Scrollbar.Horizontal| Padding is: ' + this.pane.padding);
+    }
+
     var paneWidth = this.pane.el.width();
     var trackWidth = paneWidth - this.pane.padding * 2;
     var innerEl = this.pane.inner.get(0);
@@ -387,6 +393,8 @@
    * @api private
    */
   Scrollbar.Vertical.prototype.update = function () {
+    console.debug('Scrollbar.Vertical| Padding is: ' + this.pane.padding);
+
     var paneHeight = this.pane.el.height();
     var trackHeight = paneHeight - this.pane.padding * 2;
     var innerEl = this.innerEl;
