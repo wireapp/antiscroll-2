@@ -59,8 +59,9 @@
     this.x = (false !== this.options.x) || this.options.forceHorizontal;
     this.y = (false !== this.options.y) || this.options.forceVertical;
     this.autoHide = false !== this.options.autoHide;
-    this.marginTop = this.options.marginTop || 0;
-    this.padding = this.options.padding || 2;
+    // Reads "0" as an argument
+    this.marginTop = undefined === this.options.marginTop ? 2 : this.options.marginTop;
+    this.padding = undefined === this.options.padding ? 2 : this.options.padding;
 
     this.inner = this.el.find('.antiscroll-inner');
     this.inner.css({
@@ -124,14 +125,24 @@
 
   /**
    * Rebuild Antiscroll.
-   *
+   * @param {Object} newOptions options
    * @return {Antiscroll} for chaining
-   * @api public
    */
-  Antiscroll.prototype.rebuild = function () {
+  Antiscroll.prototype.rebuild = function (newOptions) {
+    if (this.options.debug) {
+      console.debug('Rebuild');
+    }
+
+    var options = $.extend({}, this.options, newOptions);
+
+    if (options.debug) {
+      console.debug('Options:');
+      console.debug(JSON.stringify(options));
+    }
+
     this.destroy();
     this.inner.attr('style', '');
-    Antiscroll.call(this, this.el, this.options);
+    Antiscroll.call(this, this.el, options);
     return this;
   };
 
@@ -321,7 +332,7 @@
    */
   Scrollbar.Horizontal.prototype.update = function () {
     if (this.pane.options.debug) {
-      console.debug('Scrollbar.Horizontal| Padding is: ' + this.pane.padding);
+      console.debug('Scrollbar.Horizontal | Padding is: ' + this.pane.padding);
     }
 
     var paneWidth = this.pane.el.width();
@@ -393,7 +404,9 @@
    * @api private
    */
   Scrollbar.Vertical.prototype.update = function () {
-    console.debug('Scrollbar.Vertical| Padding is: ' + this.pane.padding);
+    if (this.pane.options.debug) {
+      console.debug('Scrollbar.Vertical | Padding is: ' + this.pane.padding);
+    }
 
     var paneHeight = this.pane.el.height();
     var trackHeight = paneHeight - this.pane.padding * 2;
