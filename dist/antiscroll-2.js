@@ -11,6 +11,19 @@
       var wrapperElement = this;
       var $wrapperElement = $(wrapperElement);
 
+      if (options.notOnLinux && (navigator.appVersion.indexOf('Linux') > -1)) {
+        return;
+      }
+
+      // Apply OS X like scrollbars not on Mac OS (because they have them already)
+      if (options.notOnMac && (navigator.appVersion.indexOf('Macintosh') > -1)) {
+        return;
+      }
+
+      if (options.notOnWindows && (navigator.appVersion.indexOf('Windows') > -1)) {
+        return;
+      }
+
       if (options.autoWrap) {
         // Switch elements because wrapper element is inner element
         $wrapperElement.parent().addClass('antiscroll-wrap');
@@ -51,8 +64,8 @@
 
     this.inner = this.el.find('.antiscroll-inner');
     this.inner.css({
-      width: '+=' + (this.y ? scrollbarSize() : 0)
-      , height: '+=' + (this.x ? scrollbarSize() : 0)
+      width: '+=' + (this.y ? scrollbarSize() : 0),
+      height: '+=' + (this.x ? scrollbarSize() : 0)
     });
 
     this.refresh();
@@ -382,9 +395,9 @@
    * @api private
    */
   Scrollbar.Vertical.prototype.update = function () {
-    var paneHeight = this.pane.el.height(),
-            trackHeight = paneHeight - this.pane.padding * 2,
-            innerEl = this.innerEl;
+    var paneHeight = this.pane.el.height();
+    var trackHeight = paneHeight - this.pane.padding * 2;
+    var innerEl = this.innerEl;
 
     var scrollbarHeight = trackHeight * paneHeight / innerEl.scrollHeight;
     scrollbarHeight = scrollbarHeight < 20 ? 20 : scrollbarHeight;
@@ -394,6 +407,10 @@
     if ((topPos + scrollbarHeight) > trackHeight) {
       var diff = (topPos + scrollbarHeight) - trackHeight;
       topPos = topPos - diff - 3;
+    }
+
+    if (this.pane.options.debug) {
+      console.debug('Moving to: ' + topPos);
     }
 
     this.el
@@ -410,11 +427,11 @@
    * @returns {undefined}
    */
   Scrollbar.Vertical.prototype.mousemove = function (ev) {
-    var paneHeight = this.pane.el.height(),
-            trackHeight = paneHeight - this.pane.padding * 2,
-            pos = ev.pageY - this.startPageY,
-            barHeight = this.el.height(),
-            innerEl = this.innerEl;
+    var paneHeight = this.pane.el.height();
+    var trackHeight = paneHeight - this.pane.padding * 2;
+    var pos = ev.pageY - this.startPageY;
+    var barHeight = this.el.height();
+    var innerEl = this.innerEl;
 
     // minimum top is 0, maximum is the track height
     var y = Math.min(Math.max(pos, 0), trackHeight - barHeight);
@@ -427,12 +444,10 @@
    * Called upon container mousewheel.
    * 
    * @param {type} ev
-   * @param {type} delta
-   * @param {type} x
    * @param {type} y
    * @returns {Boolean}
    */
-  Scrollbar.Vertical.prototype.mousewheel = function (ev, delta, x, y) {
+  Scrollbar.Vertical.prototype.mousewheel = function (ev, y) {
     if ((y > 0 && 0 === this.innerEl.scrollTop) ||
             (y < 0 && (this.innerEl.scrollTop + Math.ceil(this.pane.el.height())
                     === this.innerEl.scrollHeight))) {
