@@ -3,7 +3,7 @@
   /**
    * Augment jQuery prototype.
    * 
-   * @param {type} options
+   * @param {Object} options
    * @returns
    */
   $.fn.antiscroll = function (options) {
@@ -44,12 +44,12 @@
   /**
    * Antiscroll pane constructor.
    * 
-   * @param {Element|jQuery} el main pane
+   * @param {Element} wrapperElement wrapper element (main pane)
    * @param {Object} opts options
-   * @returns {antiscroll-2_L1.Antiscroll}
+   * @returns {Antiscroll}
    */
-  function Antiscroll(el, opts) {
-    this.el = $(el);
+  function Antiscroll(wrapperElement, opts) {
+    this.el = $(wrapperElement);
     this.options = opts || {};
 
     this.x = (false !== this.options.x) || this.options.forceHorizontal;
@@ -262,18 +262,20 @@
     var move = $.proxy(this, 'mousemove');
     var self = this;
 
+    var onMouseUp = function () {
+      self.dragging = false;
+      this.onselectstart = null;
+
+      $(this).unbind('mousemove', move);
+
+      if (!self.enter) {
+        self.hide();
+      }
+    };
+
     $(this.el[0].ownerDocument)
             .mousemove(move)
-            .mouseup(function () {
-              self.dragging = false;
-              this.onselectstart = null;
-
-              $(this).unbind('mousemove', move);
-
-              if (!self.enter) {
-                self.hide();
-              }
-            });
+            .mouseup(onMouseUp);
   };
 
   /**
@@ -447,13 +449,13 @@
   /**
    * Called upon drag.
    * 
-   * @param {type} ev
+   * @param {Event} event
    * @returns {undefined}
    */
-  Scrollbar.Vertical.prototype.mousemove = function (ev) {
+  Scrollbar.Vertical.prototype.mousemove = function (event) {
     var paneHeight = this.pane.el.height();
     var trackHeight = paneHeight - this.pane.padding * 2;
-    var pos = ev.pageY - this.startPageY;
+    var pos = event.pageY - this.startPageY;
     var barHeight = this.el.height();
     var innerEl = this.innerEl;
 
@@ -467,15 +469,14 @@
   /**
    * Called upon container mousewheel.
    * 
-   * @param {type} ev
-   * @param {type} y
+   * @param {Event} event
+   * @param {number} y
    * @returns {Boolean}
    */
-  Scrollbar.Vertical.prototype.mousewheel = function (ev, y) {
+  Scrollbar.Vertical.prototype.mousewheel = function (event, y) {
     if ((y > 0 && 0 === this.innerEl.scrollTop) ||
-            (y < 0 && (this.innerEl.scrollTop + Math.ceil(this.pane.el.height())
-                    === this.innerEl.scrollHeight))) {
-      ev.preventDefault();
+            (y < 0 && (this.innerEl.scrollTop + Math.ceil(this.pane.el.height()) === this.innerEl.scrollHeight))) {
+      event.preventDefault();
       return false;
     }
   };
