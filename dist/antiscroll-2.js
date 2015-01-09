@@ -16,6 +16,10 @@
         return;
       }
 
+      if (options.noWindows && (navigator.platform.substr(0, 3) === 'Win')) {
+        return;
+      }
+
       if (options.autoWrap) {
         // Switch elements because wrapper element is inner element
         $wrapperElement.parent().addClass('antiscroll-wrap');
