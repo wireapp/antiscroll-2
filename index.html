@@ -21,17 +21,17 @@
     <script>
       $(window).load(function () {
         $('#container').antiscroll({
+          debug: true,
           autoHide: false,
           autoWrap: true,
-          debug: true,
-          onlyWindows: true,
-          marginTop: 10,
-          padding: 10
+          marginTop: 88,
+          padding: 78
         });
 
         $('#wrapper').data('antiscroll').rebuild({
+          limitTop: 88,
           marginTop: 0,
-          padding: 0
+          padding: 14
         });
       });
     </script>
