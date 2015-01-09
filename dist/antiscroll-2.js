@@ -408,6 +408,12 @@
     var trackHeight = paneHeight - this.pane.padding * 2;
     var innerEl = this.innerEl;
 
+    if (this.pane.options.debug) {
+      console.debug('Scrollbar.Vertical | Track height: ' + trackHeight
+              + ' | Pane height: ' + paneHeight
+              + ' | Scroll height: ' + innerEl.scrollHeight);
+    }
+
     var scrollbarHeight = trackHeight * paneHeight / innerEl.scrollHeight;
     scrollbarHeight = scrollbarHeight < 20 ? 20 : scrollbarHeight;
 
