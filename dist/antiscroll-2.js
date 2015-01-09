@@ -187,7 +187,6 @@
    * Cleans up.
    *
    * @return {Scrollbar} for chaining
-   * @api public
    */
   Scrollbar.prototype.destroy = function () {
     this.el.remove();
@@ -242,16 +241,16 @@
   /**
    * Called upon scrollbar mousedown.
    * 
-   * @param {type} ev
+   * @param {Event} event
    * @returns {undefined}
    */
-  Scrollbar.prototype.mousedown = function (ev) {
-    ev.preventDefault();
+  Scrollbar.prototype.mousedown = function (event) {
+    event.preventDefault();
 
     this.dragging = true;
 
-    this.startPageY = ev.pageY - parseInt(this.el.css('top'), 10);
-    this.startPageX = ev.pageX - parseInt(this.el.css('left'), 10);
+    this.startPageY = event.pageY - parseInt(this.el.css('top'), 10);
+    this.startPageX = event.pageX - parseInt(this.el.css('left'), 10);
 
     // prevent crazy selections on IE
     this.el[0].ownerDocument.onselectstart = function () {
@@ -424,6 +423,9 @@
     }
 
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
+    if (topPos < this.pane.options.limitTop) {
+      topPos = this.pane.options.limitTop;
+    }
 
     if ((topPos + scrollbarHeight) > trackHeight) {
       var diff = (topPos + scrollbarHeight) - trackHeight;
