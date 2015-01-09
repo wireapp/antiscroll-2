@@ -418,9 +418,14 @@
       console.debug('Moving to: ' + topPos);
     }
 
-    this.el
-            .css('height', scrollbarHeight)
-            .css('top', topPos);
+    if (topPos < this.pane.options.limitTop) {
+      topPos = this.pane.options.limitTop;
+    }
+
+    this.el.css({
+      height: scrollbarHeight,
+      top: topPos
+    });
 
     return paneHeight < innerEl.scrollHeight;
   };
