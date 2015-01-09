@@ -414,10 +414,6 @@
       topPos = topPos - diff - 3;
     }
 
-    if (this.pane.options.debug) {
-      console.debug('Moving to: ' + topPos);
-    }
-
     if (topPos < this.pane.options.limitTop) {
       topPos = this.pane.options.limitTop;
     }
@@ -426,6 +422,11 @@
       height: scrollbarHeight,
       top: topPos
     });
+
+    if (this.pane.options.debug) {
+      console.debug('Scrollbar.Vertical.update | Scrollbar height: ' + scrollbarHeight);
+      console.debug('Scrollbar.Vertical.update | Moving to: ' + topPos);
+    }
 
     return paneHeight < innerEl.scrollHeight;
   };
