@@ -11,16 +11,8 @@
       var wrapperElement = this;
       var $wrapperElement = $(wrapperElement);
 
-      if (options.notOnLinux && (navigator.appVersion.indexOf('Linux') > -1)) {
-        return;
-      }
-
-      // Apply OS X like scrollbars not on Mac OS (because they have them already)
-      if (options.notOnMac && (navigator.appVersion.indexOf('Macintosh') > -1)) {
-        return;
-      }
-
-      if (options.notOnWindows && (navigator.appVersion.indexOf('Windows') > -1)) {
+      // Apply OS X like scrollbars only on Windows
+      if (options.onlyWindows && (navigator.platform.substr(0, 3) !== 'Win')) {
         return;
       }
 
