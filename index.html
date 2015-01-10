@@ -21,6 +21,7 @@
     <script>
       $(window).load(function () {
         $('#container').antiscroll({
+          startBottom: true,
           debug: true,
           autoHide: false,
           autoWrap: true,
@@ -29,7 +30,7 @@
         });
 
         $('#wrapper').data('antiscroll').rebuild({
-          startTop: 341,
+          startBottom: true,
           padding: 0
         });
       });

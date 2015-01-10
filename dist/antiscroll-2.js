@@ -12,11 +12,11 @@
       var $wrapperElement = $(wrapperElement);
 
       // Apply OS X like scrollbars only on Windows
-      if (options.onlyWindows && (navigator.platform.substr(0, 3) !== 'Win')) {
+      if (options.onlyOnWindows && (navigator.platform.substr(0, 3) !== 'Win')) {
         return;
       }
 
-      if (options.noWindows && (navigator.platform.substr(0, 3) === 'Win')) {
+      if (options.notOnWindows && (navigator.platform.substr(0, 3) === 'Win')) {
         return;
       }
 
@@ -165,15 +165,15 @@
 
   /**
    * Rebuild Antiscroll.
-   * @param {Object} newOptions options
+   * @param {Object} moreOptions options
    * @return {Antiscroll} for chaining
    */
-  Antiscroll.prototype.rebuild = function (newOptions) {
+  Antiscroll.prototype.rebuild = function (moreOptions) {
     if (this.options.debug) {
       console.group('Antiscroll.rebuild');
     }
 
-    var options = $.extend({}, this.options, newOptions);
+    var options = $.extend({}, this.options, moreOptions);
 
     if (options.debug) {
       console.log('Options:', options);
@@ -442,7 +442,7 @@
   /**
    * Updates size/position of scrollbar.
    *
-   * @api private
+   * @access private
    */
   Scrollbar.Vertical.prototype.update = function () {
     if (this.pane.options.debug) {
@@ -461,29 +461,38 @@
       console.log('Pane height: ' + paneHeight);
       console.log('Track height: ' + trackHeight);
       console.log('Scrollbar height: ' + scrollbarHeight);
+      console.log('Scrollable height: ' + innerEl.scrollHeight);
     }
 
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
-    if (topPos < this.pane.options.limitTop) {
-      topPos = this.pane.options.limitTop;
-    }
 
     if ((topPos + scrollbarHeight) > trackHeight) {
       var diff = (topPos + scrollbarHeight) - trackHeight;
       topPos = topPos - diff - 3;
     }
 
-    if (topPos < this.pane.options.limitTop) {
-      topPos = this.pane.options.limitTop;
+    if (this.pane.options.startBottom) {
+      var paneHeightDiff = paneHeight - scrollbarHeight;
+      var possibileScrollTop = innerEl.scrollHeight - paneHeightDiff;
+
+      if (this.pane.options.debug) {
+        console.log('Pane height - scrollbar:', paneHeightDiff);
+        console.log('Scroll height before bottom: ' + parseInt(innerEl.scrollHeight, 10)
+                + ' - ' + parseInt(paneHeightDiff, 10)
+                + ' = ' + parseInt(possibileScrollTop, 10)
+                , possibileScrollTop);
+      }
+
+      if (possibileScrollTop > 0) {
+        topPos = paneHeightDiff;
+        innerEl.scrollTop = possibileScrollTop;
+        this.pane.options.startBottom = undefined;
+      }
     }
 
-    if (this.pane.options.startTop) {
-      topPos += this.pane.options.startTop;
-      this.pane.options.startTop = undefined;
-    }
 
     if (this.pane.options.debug) {
-      console.log('Moving to: ' + topPos);
+      console.log('Moving to: ' + topPos + ' (topPos), ' + innerEl.scrollTop + ' (scrollTop)');
       console.groupEnd();
     }
 
