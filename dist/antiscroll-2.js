@@ -459,29 +459,30 @@
     var trackHeight = paneHeight - this.pane.padding * 2;
     var innerEl = this.innerEl;
 
-    var scrollbarHeight = trackHeight * paneHeight / innerEl.scrollHeight;
-    scrollbarHeight = scrollbarHeight < 20 ? 20 : scrollbarHeight;
+    var barHeight = trackHeight * paneHeight / innerEl.scrollHeight;
+    barHeight = barHeight < 20 ? 20 : barHeight;
+    barHeight = parseInt(barHeight, 10);
 
     if (this.pane.options.debug) {
       console.log('Pane height: ' + paneHeight);
       console.log('Track height: ' + trackHeight);
-      console.log('Scrollbar height: ' + scrollbarHeight);
+      console.log('Scrollbar height: ' + barHeight);
       console.log('Scrollable height: ' + innerEl.scrollHeight);
     }
 
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
 
     // If scrollbar would go beyond boundaries
-    if ((topPos + scrollbarHeight) > trackHeight) {
+    if ((topPos + barHeight) > trackHeight) {
       if (this.pane.options.debug) {
         console.warn('Scrollbar goes beyond boundaries. Offset will be adjusted.');
       }
-      var overlap = (topPos + scrollbarHeight) - trackHeight;
+      var overlap = (topPos + barHeight) - trackHeight;
       topPos = topPos - overlap;
     }
 
     if (this.pane.options.startBottom) {
-      var paneHeightDiff = paneHeight - scrollbarHeight;
+      var paneHeightDiff = paneHeight - barHeight;
       var possibileScrollTop = innerEl.scrollHeight - paneHeightDiff;
 
       if (this.pane.options.debug) {
@@ -509,7 +510,7 @@
     }
 
     this.el.css({
-      height: scrollbarHeight,
+      height: barHeight,
       top: topPos
     });
 
@@ -521,21 +522,31 @@
   /**
    * Called upon drag.
    * 
-   * @param {Event} event
+   * @param {MouseEvent} event
    * @returns {undefined}
    */
   Scrollbar.Vertical.prototype.mousemove = function (event) {
+    if (this.pane.options.debug) {
+      console.group('Scrollbar.Vertical.mousemove');
+    }
+
     var paneHeight = this.pane.el.height();
     var trackHeight = paneHeight - this.pane.padding * 2;
     var pos = event.pageY - this.startPageY;
     var barHeight = this.el.height();
     var innerEl = this.innerEl;
 
+    console.log('barHeight:', barHeight);
+
     // minimum top is 0, maximum is the track height
     var y = Math.min(Math.max(pos, 0), trackHeight - barHeight);
 
     innerEl.scrollTop =
             (innerEl.scrollHeight - paneHeight) * y / (trackHeight - barHeight);
+
+    if (this.pane.options.debug) {
+      console.groupEnd();
+    }
   };
 
   /**
