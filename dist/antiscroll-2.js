@@ -32,6 +32,13 @@
         $wrapperElement.data('antiscroll').destroy();
       }
 
+      if (options.debug) {
+        console.group('$.fn.antiscroll');
+        console.log('Wrapper element:', $wrapperElement.get(0));
+        console.log('Options:', options);
+        console.groupEnd();
+      }
+
       $wrapperElement.data('antiscroll', new $.Antiscroll(wrapperElement, options));
     });
   };
@@ -45,37 +52,60 @@
    * Antiscroll pane constructor.
    * 
    * @param {Element} wrapperElement wrapper element (main pane)
-   * @param {Object} opts options
+   * @param {Object} options options
+   * 
    * @returns {Antiscroll}
    */
-  function Antiscroll(wrapperElement, opts) {
+  function Antiscroll(wrapperElement, options) {
     this.el = $(wrapperElement);
-    this.options = opts || {};
+    this.options = options || {};
 
     this.x = (false !== this.options.x) || this.options.forceHorizontal;
     this.y = (false !== this.options.y) || this.options.forceVertical;
     this.autoHide = false !== this.options.autoHide;
+
     // Reads "0" as an argument
     this.marginTop = undefined === this.options.marginTop ? 2 : this.options.marginTop;
     this.padding = undefined === this.options.padding ? 2 : this.options.padding;
 
     this.inner = this.el.find('.antiscroll-inner');
+
+    if (options.debug) {
+      console.group('Antiscroll');
+      console.log('Inner element:', this.inner.get(0));
+      console.log('Content width:', this.inner.css('width'));
+      console.log('Content height:', this.inner.css('height'));
+    }
+
     this.inner.css({
       width: '+=' + (this.y ? scrollbarSize() : 0),
       height: '+=' + (this.x ? scrollbarSize() : 0)
     });
+
+    if (options.debug) {
+      console.log('New content width:', this.inner.css('width'));
+      console.log('New content height:', this.inner.css('height'));
+      console.groupEnd();
+    }
 
     this.refresh();
   }
 
   /**
    * Refresh scrollbars
-   *
-   * @api public
    */
   Antiscroll.prototype.refresh = function () {
+    if (this.options.debug) {
+      console.group('Antiscroll.refresh');
+    }
+
     var needHScroll = this.inner.get(0).scrollWidth > this.el.width() + (this.y ? scrollbarSize() : 0);
     var needVScroll = this.inner.get(0).scrollHeight > this.el.height() + (this.x ? scrollbarSize() : 0);
+
+    if (this.options.debug) {
+      console.log('Needs horizontal scroll:', needHScroll);
+      console.log('Needs vertical scroll:', needVScroll);
+    }
 
     if (this.x) {
       if (!this.horizontal && needHScroll) {
@@ -99,6 +129,10 @@
       }
     }
 
+    if (this.options.debug) {
+      console.groupEnd();
+    }
+
     return 'Scrollbars have been refreshed.';
   };
 
@@ -108,14 +142,24 @@
    * @return {Antiscroll} for chaining
    */
   Antiscroll.prototype.destroy = function () {
+    if (this.options.debug) {
+      console.group('Antiscroll.destroy');
+    }
+
     if (this.horizontal) {
       this.horizontal.destroy();
       this.horizontal = null;
     }
+
     if (this.vertical) {
       this.vertical.destroy();
       this.vertical = null;
     }
+
+    if (this.options.debug) {
+      console.groupEnd();
+    }
+
     return this;
   };
 
@@ -126,19 +170,23 @@
    */
   Antiscroll.prototype.rebuild = function (newOptions) {
     if (this.options.debug) {
-      console.debug('Rebuild');
+      console.group('Antiscroll.rebuild');
     }
 
     var options = $.extend({}, this.options, newOptions);
 
     if (options.debug) {
-      console.debug('Options:');
-      console.debug(JSON.stringify(options));
+      console.log('Options:', options);
     }
 
     this.destroy();
     this.inner.attr('style', '');
     Antiscroll.call(this, this.el, options);
+
+    if (this.options.debug) {
+      console.groupEnd();
+    }
+
     return this;
   };
 
@@ -307,7 +355,7 @@
   };
 
   /**
-   * Horizontal scrollbar constructor
+   * Horizontal scrollbar constructor.
    * 
    * @param {type} pane
    * @returns {antiscroll-2_L1.Scrollbar.Horizontal}
@@ -328,10 +376,6 @@
    * @returns {Boolean}
    */
   Scrollbar.Horizontal.prototype.update = function () {
-    if (this.pane.options.debug) {
-      console.debug('Scrollbar.Horizontal | Padding is: ' + this.pane.padding);
-    }
-
     var paneWidth = this.pane.el.width();
     var trackWidth = paneWidth - this.pane.padding * 2;
     var innerEl = this.pane.inner.get(0);
@@ -402,7 +446,8 @@
    */
   Scrollbar.Vertical.prototype.update = function () {
     if (this.pane.options.debug) {
-      console.debug('Scrollbar.Vertical | Padding is: ' + this.pane.padding);
+      console.group('Scrollbar.Vertical');
+      console.log('Padding: ' + this.pane.padding);
     }
 
     var paneHeight = this.pane.el.height();
@@ -413,13 +458,9 @@
     scrollbarHeight = scrollbarHeight < 20 ? 20 : scrollbarHeight;
 
     if (this.pane.options.debug) {
-      console.debug(
-              'Scrollbar.Vertical'
-              + ' | Pane height: ' + paneHeight
-              + ' | Track height: ' + trackHeight
-              + ' | Scroll height: ' + innerEl.scrollHeight
-              + ' | Scrollbar height: ' + scrollbarHeight
-              );
+      console.log('Pane height: ' + paneHeight);
+      console.log('Track height: ' + trackHeight);
+      console.log('Scrollbar height: ' + scrollbarHeight);
     }
 
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
@@ -436,14 +477,21 @@
       topPos = this.pane.options.limitTop;
     }
 
+    if (this.pane.options.startTop) {
+      topPos += this.pane.options.startTop;
+      this.pane.options.startTop = undefined;
+    }
+
+    if (this.pane.options.debug) {
+      console.log('Moving to: ' + topPos);
+      console.groupEnd();
+    }
+
     this.el.css({
       height: scrollbarHeight,
       top: topPos
     });
 
-    if (this.pane.options.debug) {
-      console.debug('Scrollbar.Vertical.update | Moving to: ' + topPos);
-    }
 
     return paneHeight < innerEl.scrollHeight;
   };
