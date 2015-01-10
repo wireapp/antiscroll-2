@@ -251,7 +251,7 @@
   /**
    * Called upon mouseenter.
    *
-   * @api private
+   * @access private
    */
   Scrollbar.prototype.mouseenter = function () {
     this.enter = true;
@@ -261,7 +261,7 @@
   /**
    * Called upon mouseleave.
    *
-   * @api private
+   * @access private
    */
   Scrollbar.prototype.mouseleave = function () {
     this.enter = false;
@@ -276,7 +276,7 @@
   /**
    * Called upon wrap scroll.
    *
-   * @api private
+   * @access private
    */
   Scrollbar.prototype.scroll = function () {
     if (!this.shown) {
@@ -349,7 +349,7 @@
   /**
    * Hide scrollbar.
    *
-   * @api private
+   * @access private
    */
   Scrollbar.prototype.hide = function () {
     if (this.pane.autoHide !== false && this.shown) {
