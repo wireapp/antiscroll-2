@@ -59,9 +59,10 @@
   function Antiscroll(wrapperElement, options) {
     this.el = $(wrapperElement);
     this.options = options || {};
-    this.options.last = {
-      move: 0,
-      topPos: 0
+    this.options.cache = {
+      isMovingUp: false,
+      scrollPosition: 0,
+      diff: 0
     };
 
     this.x = (false !== this.options.x) || this.options.forceHorizontal;
@@ -470,9 +471,13 @@
 
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
 
+    // If scrollbar would go beyond boundaries
     if ((topPos + scrollbarHeight) > trackHeight) {
-      var diff = (topPos + scrollbarHeight) - trackHeight;
-      topPos = topPos - diff - 3;
+      if (this.pane.options.debug) {
+        console.warn('Scrollbar goes beyond boundaries. Offset will be adjusted.');
+      }
+      var overlap = (topPos + scrollbarHeight) - trackHeight;
+      topPos = topPos - overlap;
     }
 
     if (this.pane.options.startBottom) {
@@ -496,23 +501,19 @@
 
 
     if (this.pane.options.debug) {
+      console.log('Last position: ' + this.pane.options.cache.scrollPosition);
       console.log('Moving to: ' + topPos + ' (topPos), ' + innerEl.scrollTop + ' (scrollTop)');
+      this.pane.options.cache.diff = topPos - this.pane.options.cache.scrollPosition;
+      console.log('Step difference: ' + this.pane.options.cache.diff);
       console.groupEnd();
     }
-
-    if (this.pane.options.debug) {
-      console.log('Last topPos: ' + this.pane.options.last.topPos);
-      console.log('Move: ' + this.pane.options.last.move);
-    }
-
-    this.pane.options.last.move = topPos - this.pane.options.last.topPos;
 
     this.el.css({
       height: scrollbarHeight,
       top: topPos
     });
 
-    this.pane.options.last.topPos = topPos;
+    this.pane.options.cache.scrollPosition = topPos;
 
     return paneHeight < innerEl.scrollHeight;
   };
@@ -547,11 +548,17 @@
   Scrollbar.Vertical.prototype.mousewheel = function (event, y) {
     if (this.pane.options.debug) {
       console.group('Scrollbar.Vertical.mousewheel');
-      if (event.deltaY < 0) {
-        console.log('Mousewheel down', event);
-      } else {
-        console.log('Mousewheel up', event);
-      }
+      console.log('Mousewheel event', event);
+    }
+
+    if (event.deltaY < 0) {
+      this.pane.options.cache.isMovingUp = false;
+    } else {
+      this.pane.options.cache.isMovingUp = true;
+    }
+
+    if (this.pane.options.debug) {
+      console.log('Moves up: ' + this.pane.options.cache.isMovingUp);
       console.groupEnd();
     }
 
