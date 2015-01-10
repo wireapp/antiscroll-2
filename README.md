@@ -3,12 +3,13 @@ antiscroll-2
 
 Unofficial successor of [Antiscroll](https://github.com/LearnBoost/antiscroll) with the following benefits:
 
+- More configurable options
 - Release versions
 - Bower support
 - Sourcemap files
 - Stylesheets written in Less
 - Cross-browser support using [LESS Hat](https://github.com/madebysource/lesshat)
-- More configurable options
+- Documentation according to JSDoc 3
 
 ## Options
 
