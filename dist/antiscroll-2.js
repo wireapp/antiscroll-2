@@ -59,6 +59,10 @@
   function Antiscroll(wrapperElement, options) {
     this.el = $(wrapperElement);
     this.options = options || {};
+    this.options.last = {
+      move: 0,
+      topPos: 0
+    };
 
     this.x = (false !== this.options.x) || this.options.forceHorizontal;
     this.y = (false !== this.options.y) || this.options.forceVertical;
@@ -496,11 +500,19 @@
       console.groupEnd();
     }
 
+    if (this.pane.options.debug) {
+      console.log('Last topPos: ' + this.pane.options.last.topPos);
+      console.log('Move: ' + this.pane.options.last.move);
+    }
+
+    this.pane.options.last.move = topPos - this.pane.options.last.topPos;
+
     this.el.css({
       height: scrollbarHeight,
       top: topPos
     });
 
+    this.pane.options.last.topPos = topPos;
 
     return paneHeight < innerEl.scrollHeight;
   };
@@ -528,13 +540,41 @@
   /**
    * Called upon container mousewheel.
    * 
-   * @param {Event} event
+   * @param {WheelEvent} event
    * @param {number} y
    * @returns {Boolean}
    */
   Scrollbar.Vertical.prototype.mousewheel = function (event, y) {
-    if ((y > 0 && 0 === this.innerEl.scrollTop) ||
-            (y < 0 && (this.innerEl.scrollTop + Math.ceil(this.pane.el.height()) === this.innerEl.scrollHeight))) {
+    if (this.pane.options.debug) {
+      console.group('Scrollbar.Vertical.mousewheel');
+      if (event.deltaY < 0) {
+        console.log('Mousewheel down', event);
+      } else {
+        console.log('Mousewheel up', event);
+      }
+      console.groupEnd();
+    }
+
+    /**
+     * Checks if scrolling with the mousewheel moves the scrollbar
+     * all the way up or all the way down.
+     * 
+     * @param {type} paneHeight
+     * @param {type} scrollHeight
+     * @param {type} scrollTop
+     * @returns {Boolean} Returns true if the boundary was reached.
+     */
+    function hasReachedBoundary(paneHeight, scrollHeight, scrollTop) {
+      if ((y > 0 && 0 === scrollTop) ||
+              (y < 0 && (scrollTop + Math.ceil(paneHeight) === scrollHeight))) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    // Disable further mousewheel scrolling if the scrollbar is bottommost or topmost
+    if (hasReachedBoundary(this.pane.el.height(), this.innerEl.scrollHeight, this.innerEl.scrollTop)) {
       event.preventDefault();
       return false;
     }
