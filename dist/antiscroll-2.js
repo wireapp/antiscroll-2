@@ -556,7 +556,8 @@
     }
 
     var topPos =
-            (innerEl.scrollHeight - paneHeight) * heightAboveBar / scrollableTrack;
+            (innerEl.scrollHeight - trackHeight)
+            * heightAboveBar / scrollableTrack;
     topPos = Math.round(topPos);
 
     if (this.pane.options.debug) {
@@ -596,7 +597,10 @@
 
     if (this.pane.options.debug) {
       console.log('Moves up: ' + this.pane.options.cache.isMovingUp);
-      console.log('Scrolled content: ' + this.innerEl.scrollTop);
+      var heightOfMouseWheelMove = (-1 * event.deltaY) * event.deltaFactor;
+      console.log('Delta factor: ' + heightOfMouseWheelMove);
+      var scrolledContent = this.innerEl.scrollTop + heightOfMouseWheelMove;
+      console.log('Scrolled content: ' + scrolledContent);
       console.groupEnd();
     }
 
