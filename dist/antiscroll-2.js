@@ -396,12 +396,12 @@
   /**
    * Called upon drag.
    * 
-   * @param {type} ev
+   * @param {type} event
    * @returns {undefined}
    */
-  Scrollbar.Horizontal.prototype.mousemove = function (ev) {
+  Scrollbar.Horizontal.prototype.mousemove = function (event) {
     var trackWidth = this.pane.el.width() - this.pane.padding * 2;
-    var pos = ev.pageX - this.startPageX;
+    var pos = event.pageX - this.startPageX;
     var barWidth = this.el.width();
     var innerEl = this.pane.inner.get(0);
 
@@ -452,7 +452,6 @@
   Scrollbar.Vertical.prototype.update = function () {
     if (this.pane.options.debug) {
       console.group('Scrollbar.Vertical');
-      console.log('Padding: ' + this.pane.padding);
     }
 
     var paneHeight = this.pane.el.height();
@@ -464,10 +463,11 @@
     barHeight = parseInt(barHeight, 10);
 
     if (this.pane.options.debug) {
-      console.log('Pane height: ' + paneHeight);
-      console.log('Track height: ' + trackHeight);
-      console.log('Scrollbar height: ' + barHeight);
-      console.log('Scrollable height: ' + innerEl.scrollHeight);
+      console.log(
+              'Container height: ' + paneHeight
+              + ', Track height: ' + trackHeight
+              + ', Scrollbar height: ' + barHeight
+              );
     }
 
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
@@ -500,12 +500,12 @@
       }
     }
 
+    topPos = Math.round(topPos);
 
     if (this.pane.options.debug) {
-      console.log('Last position: ' + this.pane.options.cache.scrollPosition);
-      console.log('Moving to: ' + topPos + ' (topPos), ' + innerEl.scrollTop + ' (scrollTop)');
+      console.log('Scrolled track: ' + topPos + ' / ' + trackHeight);
+      console.log('Scrolled content: ' + innerEl.scrollTop + ' / ' + innerEl.scrollHeight);
       this.pane.options.cache.diff = topPos - this.pane.options.cache.scrollPosition;
-      console.log('Step difference: ' + this.pane.options.cache.diff);
       console.groupEnd();
     }
 
@@ -520,7 +520,8 @@
   };
 
   /**
-   * Called upon drag.
+   * Sets the position for the vertical scrollbar. 
+   * Called when the vertical scrollbar is dragged.
    * 
    * @param {MouseEvent} event
    * @returns {undefined}
@@ -532,17 +533,23 @@
 
     var paneHeight = this.pane.el.height();
     var trackHeight = paneHeight - this.pane.padding * 2;
-    var pos = event.pageY - this.startPageY;
-    var barHeight = this.el.height();
     var innerEl = this.innerEl;
 
-    console.log('barHeight:', barHeight);
+    var pos = event.pageY - this.startPageY;
+    var barHeight = this.el.height();
+    var availableScrollHeight = trackHeight - barHeight;
 
     // minimum top is 0, maximum is the track height
-    var y = Math.min(Math.max(pos, 0), trackHeight - barHeight);
+    var heightAboveBar = Math.min(Math.max(pos, 0), availableScrollHeight);
+
+    if (this.pane.options.debug) {
+      console.log('Container height: ' + paneHeight);
+      console.log('Content height: ' + innerEl.scrollHeight);
+      console.log('Scrolled track: ' + heightAboveBar + ' / ' + trackHeight);
+    }
 
     innerEl.scrollTop =
-            (innerEl.scrollHeight - paneHeight) * y / (trackHeight - barHeight);
+            (innerEl.scrollHeight - paneHeight) * heightAboveBar / availableScrollHeight;
 
     if (this.pane.options.debug) {
       console.groupEnd();
