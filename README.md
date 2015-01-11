@@ -18,13 +18,14 @@ All possible options:
 
 ```js
 {
-  autoHide: <boolean>,
-  autoWrap: <boolean>,
-  debug: <boolean>,
-  marginTop: <number>,
-  padding: <number>,
-  startBottom: <boolean>,
-  notOnWindows: <boolean>,
+  autoHide: <boolean>
+  autoWrap: <boolean>
+  debug: <boolean>
+  marginTop: <number>
+  padding: <number>
+  startBottom: <boolean>
+  notOnWindows: <boolean>
   onlyOnWindows: <boolean>
+  notOnMacintosh: <boolean>
 }
 ```
