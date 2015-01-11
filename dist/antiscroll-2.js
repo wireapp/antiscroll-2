@@ -537,10 +537,10 @@
 
     var pos = event.pageY - this.startPageY;
     var barHeight = this.el.height();
-    var availableScrollHeight = trackHeight - barHeight;
+    var scrollableTrack = trackHeight - barHeight;
 
     // minimum top is 0, maximum is the track height
-    var heightAboveBar = Math.min(Math.max(pos, 0), availableScrollHeight);
+    var heightAboveBar = Math.min(Math.max(pos, 0), scrollableTrack);
 
     if (this.pane.options.debug) {
       console.log('Container height: ' + paneHeight);
@@ -549,7 +549,9 @@
     }
 
     innerEl.scrollTop =
-            (innerEl.scrollHeight - paneHeight) * heightAboveBar / availableScrollHeight;
+            (innerEl.scrollHeight - paneHeight) * heightAboveBar / scrollableTrack;
+
+    // TODO: Move across boundaries is missing!
 
     if (this.pane.options.debug) {
       console.groupEnd();
