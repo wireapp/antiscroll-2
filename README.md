@@ -10,6 +10,7 @@ Unofficial successor of [Antiscroll](https://github.com/LearnBoost/antiscroll) w
 - Stylesheets written in Less
 - Cross-browser support using [LESS Hat](https://github.com/madebysource/lesshat)
 - Documentation according to JSDoc 3
+- Various Antiscroll bug fixes
 
 ## Options
 
