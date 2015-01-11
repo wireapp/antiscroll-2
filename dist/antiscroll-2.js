@@ -451,7 +451,7 @@
    */
   Scrollbar.Vertical.prototype.update = function () {
     if (this.pane.options.debug) {
-      console.group('Scrollbar.Vertical');
+      console.group('Scrollbar.Vertical.update');
     }
 
     var paneHeight = this.pane.el.height();
@@ -463,11 +463,13 @@
     barHeight = parseInt(barHeight, 10);
 
     if (this.pane.options.debug) {
-      console.log(
-              'Container height: ' + paneHeight
-              + ', Track height: ' + trackHeight
-              + ', Scrollbar height: ' + barHeight
-              );
+      console.groupCollapsed('Measurements');
+      console.log('Content height: ', innerEl.scrollHeight);
+      console.log('Container height:', paneHeight);
+      console.log('Track height:', trackHeight);
+      console.log('Scrollbar height:', barHeight);
+      console.log('Scrollable track:', trackHeight - barHeight);
+      console.groupEnd();
     }
 
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
@@ -543,13 +545,28 @@
     var heightAboveBar = Math.min(Math.max(pos, 0), scrollableTrack);
 
     if (this.pane.options.debug) {
-      console.log('Container height: ' + paneHeight);
-      console.log('Content height: ' + innerEl.scrollHeight);
+      console.groupCollapsed('Measurements');
+      console.log('Content height: ', innerEl.scrollHeight);
+      console.log('Container height:', paneHeight);
+      console.log('Track height:', trackHeight);
+      console.log('Scrollbar height:', barHeight);
+      console.log('Scrollable track:', trackHeight - barHeight);
+      console.groupEnd();
       console.log('Scrolled track: ' + heightAboveBar + ' / ' + trackHeight);
     }
 
-    innerEl.scrollTop =
+    var topPos =
             (innerEl.scrollHeight - paneHeight) * heightAboveBar / scrollableTrack;
+    topPos = Math.round(topPos);
+
+    if (this.pane.options.debug) {
+      console.log('Scrolled content: '
+              + topPos + ' = '
+              + '(' + innerEl.scrollHeight + ' - ' + paneHeight + ') * '
+              + heightAboveBar + ' / ' + scrollableTrack);
+    }
+
+    innerEl.scrollTop = topPos;
 
     // TODO: Move across boundaries is missing!
 
@@ -579,6 +596,7 @@
 
     if (this.pane.options.debug) {
       console.log('Moves up: ' + this.pane.options.cache.isMovingUp);
+      console.log('Scrolled content: ' + this.innerEl.scrollTop);
       console.groupEnd();
     }
 
