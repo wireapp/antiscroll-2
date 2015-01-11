@@ -1,7 +1,29 @@
 (function ($) {
 
+  function AntiscrollMock() {
+  }
+
+  AntiscrollMock.prototype.destroy = function () {
+  };
+
+  AntiscrollMock.prototype.rebuild = function () {
+  };
+
+  AntiscrollMock.prototype.refresh = function () {
+  };
+
+  function dontApply($contentElement, options) {
+    if (options.debug) {
+      console.warn('Scrollbars are not applied. A mock will be used to fake the public API.');
+    }
+
+    $contentElement.parent().data('antiscroll', new AntiscrollMock());
+  }
+
   /**
    * Augment jQuery prototype.
+   * $.fn.antiscroll should be run on the content element (not the wrapper!).
+   * The data 'antiscroll' will be applied to the wrapper.
    * 
    * @param {Object} options
    * @returns
@@ -13,10 +35,17 @@
 
       // Apply OS X like scrollbars only on Windows
       if (options.onlyOnWindows && (navigator.platform.substr(0, 3) !== 'Win')) {
+        dontApply($wrapperElement, options);
         return;
       }
 
       if (options.notOnWindows && (navigator.platform.substr(0, 3) === 'Win')) {
+        dontApply($wrapperElement, options);
+        return;
+      }
+
+      if (options.notOnMacintosh && (navigator.platform.substr(0, 3) === 'Mac')) {
+        dontApply($wrapperElement, options);
         return;
       }
 
@@ -54,6 +83,7 @@
    * @param {Element} wrapperElement wrapper element (main pane)
    * @param {Object} options options
    * 
+   * @access public
    * @returns {Antiscroll}
    */
   function Antiscroll(wrapperElement, options) {
@@ -97,7 +127,9 @@
   }
 
   /**
-   * Refresh scrollbars
+   * Refresh scrollbars.
+   * 
+   * @access public
    */
   Antiscroll.prototype.refresh = function () {
     if (this.options.debug) {
@@ -144,6 +176,7 @@
   /**
    * Cleans up.
    *
+   * @access public
    * @return {Antiscroll} for chaining
    */
   Antiscroll.prototype.destroy = function () {
@@ -198,6 +231,7 @@
   /**
    * Scrollbar constructor.
    * 
+   * @access public
    * @param {Element|jQuery} pane element
    * @returns {antiscroll-2_L1.Scrollbar}
    */
@@ -239,6 +273,7 @@
   /**
    * Cleans up.
    *
+   * @access public
    * @return {Scrollbar} for chaining
    */
   Scrollbar.prototype.destroy = function () {
@@ -294,6 +329,7 @@
   /**
    * Called upon scrollbar mousedown.
    * 
+   * @access private
    * @param {Event} event
    * @returns {undefined}
    */
@@ -333,6 +369,7 @@
   /**
    * Show scrollbar.
    * 
+   * @access private
    * @returns {undefined}
    */
   Scrollbar.prototype.show = function () {
@@ -362,6 +399,7 @@
   /**
    * Horizontal scrollbar constructor.
    * 
+   * @access private
    * @param {type} pane
    * @returns {antiscroll-2_L1.Scrollbar.Horizontal}
    */
@@ -378,6 +416,7 @@
   /**
    * Updates size/position of scrollbar.
    * 
+   * @access private
    * @returns {Boolean}
    */
   Scrollbar.Horizontal.prototype.update = function () {
@@ -396,6 +435,7 @@
   /**
    * Called upon drag.
    * 
+   * @access private
    * @param {type} event
    * @returns {undefined}
    */
@@ -415,6 +455,7 @@
   /**
    * Called upon container mousewheel.
    * 
+   * @access private
    * @param {type} ev
    * @param {type} x
    * @returns {Boolean}
@@ -431,6 +472,7 @@
   /**
    * Vertical scrollbar constructor.
    * 
+   * @access private
    * @param {type} pane
    * @returns {antiscroll-2_L1.Scrollbar.Vertical}
    */
@@ -525,6 +567,7 @@
    * Sets the position for the vertical scrollbar. 
    * Called when the vertical scrollbar is dragged.
    * 
+   * @access private
    * @param {MouseEvent} event
    * @returns {undefined}
    */
@@ -579,6 +622,7 @@
   /**
    * Called upon container mousewheel.
    * 
+   * @access private
    * @param {WheelEvent} event
    * @param {number} y
    * @returns {Boolean}
@@ -632,6 +676,7 @@
   /**
    * Cross-browser inheritance.
    * 
+   * @access private
    * @param {Function} ctorA constructor
    * @param {Function} ctorB constructor we inherit from
    * @returns {undefined}
