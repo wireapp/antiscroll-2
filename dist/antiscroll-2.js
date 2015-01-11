@@ -52,7 +52,9 @@
       if (options.autoWrap) {
         // Switch elements because wrapper element is inner element
         $wrapperElement.parent().addClass('antiscroll-wrap');
-        $wrapperElement.addClass('antiscroll-inner');
+        $wrapperElement
+                .addClass('antiscroll-inner')
+                .css('-ms-overflow-style', 'none');
         $wrapperElement = $wrapperElement.parent();
         wrapperElement = $wrapperElement.get();
       }
