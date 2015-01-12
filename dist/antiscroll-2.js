@@ -68,6 +68,12 @@
         console.groupEnd();
       }
 
+      if (options.autoResize) {
+        $(window).resize(function () {
+          $(wrapperElement).data('antiscroll').rebuild();
+        });
+      }
+
       $wrapperElement.data('antiscroll', new $.Antiscroll(wrapperElement, options));
     });
   };

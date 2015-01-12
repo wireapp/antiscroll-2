@@ -19,6 +19,7 @@ All possible options:
 ```js
 {
   autoHide: <boolean>
+  autoResize: <boolean>
   autoWrap: <boolean>
   debug: <boolean>
   marginTop: <number>
