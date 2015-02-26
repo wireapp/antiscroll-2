@@ -24,7 +24,7 @@
    * Augment jQuery prototype.
    * $.fn.antiscroll should be run on the content element (not the wrapper!).
    * The data 'antiscroll' will be applied to the wrapper.
-   * 
+   *
    * @param {Object} options
    * @returns
    */
@@ -68,12 +68,6 @@
         console.groupEnd();
       }
 
-      if (options.autoResize) {
-        $(window).resize(function () {
-          $(wrapperElement).data('antiscroll').rebuild();
-        });
-      }
-
       $wrapperElement.data('antiscroll', new $.Antiscroll(wrapperElement, options));
     });
   };
@@ -85,10 +79,10 @@
 
   /**
    * Antiscroll pane constructor.
-   * 
+   *
    * @param {Element} wrapperElement wrapper element (main pane)
    * @param {Object} options options
-   * 
+   *
    * @access public
    * @returns {Antiscroll}
    */
@@ -129,12 +123,16 @@
       console.groupEnd();
     }
 
+    if (options.autoResize) {
+      $(window).resize($.proxy(this.rebuild, this));
+    }
+
     this.refresh();
   }
 
   /**
    * Refresh scrollbars.
-   * 
+   *
    * @access public
    */
   Antiscroll.prototype.refresh = function () {
@@ -204,6 +202,10 @@
       console.groupEnd();
     }
 
+    if (this.options.autoResize) {
+      $(window).unbind('resize', this.rebuild);
+    }
+
     return this;
   };
 
@@ -236,7 +238,7 @@
 
   /**
    * Scrollbar constructor.
-   * 
+   *
    * @access public
    * @param {Element|jQuery} pane element
    * @returns {antiscroll-2_L1.Scrollbar}
@@ -334,7 +336,7 @@
 
   /**
    * Called upon scrollbar mousedown.
-   * 
+   *
    * @access private
    * @param {Event} event
    * @returns {undefined}
@@ -374,7 +376,7 @@
 
   /**
    * Show scrollbar.
-   * 
+   *
    * @access private
    * @returns {undefined}
    */
@@ -404,7 +406,7 @@
 
   /**
    * Horizontal scrollbar constructor.
-   * 
+   *
    * @access private
    * @param {type} pane
    * @returns {antiscroll-2_L1.Scrollbar.Horizontal}
@@ -421,7 +423,7 @@
 
   /**
    * Updates size/position of scrollbar.
-   * 
+   *
    * @access private
    * @returns {Boolean}
    */
@@ -440,7 +442,7 @@
 
   /**
    * Called upon drag.
-   * 
+   *
    * @access private
    * @param {type} event
    * @returns {undefined}
@@ -455,12 +457,12 @@
     var y = Math.min(Math.max(pos, 0), trackWidth - barWidth);
 
     innerEl.scrollLeft =
-            (innerEl.scrollWidth - this.pane.el.width()) * y / (trackWidth - barWidth);
+      (innerEl.scrollWidth - this.pane.el.width()) * y / (trackWidth - barWidth);
   };
 
   /**
    * Called upon container mousewheel.
-   * 
+   *
    * @access private
    * @param {type} ev
    * @param {type} x
@@ -468,8 +470,8 @@
    */
   Scrollbar.Horizontal.prototype.mousewheel = function (ev, x) {
     if ((x < 0 && 0 === this.pane.inner.get(0).scrollLeft) ||
-            (x > 0 && (this.innerEl.scrollLeft + Math.ceil(this.pane.el.width())
-                    === this.innerEl.scrollWidth))) {
+      (x > 0 && (this.innerEl.scrollLeft + Math.ceil(this.pane.el.width())
+        === this.innerEl.scrollWidth))) {
       ev.preventDefault();
       return false;
     }
@@ -477,7 +479,7 @@
 
   /**
    * Vertical scrollbar constructor.
-   * 
+   *
    * @access private
    * @param {type} pane
    * @returns {antiscroll-2_L1.Scrollbar.Vertical}
@@ -538,9 +540,9 @@
       if (this.pane.options.debug) {
         console.log('Pane height - scrollbar:', paneHeightDiff);
         console.log('Scroll height before bottom: ' + parseInt(innerEl.scrollHeight, 10)
-                + ' - ' + parseInt(paneHeightDiff, 10)
-                + ' = ' + parseInt(possibileScrollTop, 10)
-                , possibileScrollTop);
+            + ' - ' + parseInt(paneHeightDiff, 10)
+            + ' = ' + parseInt(possibileScrollTop, 10)
+          , possibileScrollTop);
       }
 
       if (possibileScrollTop > 0) {
@@ -570,9 +572,9 @@
   };
 
   /**
-   * Sets the position for the vertical scrollbar. 
+   * Sets the position for the vertical scrollbar.
    * Called when the vertical scrollbar is dragged.
-   * 
+   *
    * @access private
    * @param {MouseEvent} event
    * @returns {undefined}
@@ -605,15 +607,15 @@
     }
 
     var topPos =
-            (innerEl.scrollHeight - trackHeight)
-            * heightAboveBar / scrollableTrack;
+      (innerEl.scrollHeight - trackHeight)
+      * heightAboveBar / scrollableTrack;
     topPos = Math.round(topPos);
 
     if (this.pane.options.debug) {
       console.log('Scrolled content: '
-              + topPos + ' = '
-              + '(' + innerEl.scrollHeight + ' - ' + paneHeight + ') * '
-              + heightAboveBar + ' / ' + scrollableTrack);
+        + topPos + ' = '
+        + '(' + innerEl.scrollHeight + ' - ' + paneHeight + ') * '
+        + heightAboveBar + ' / ' + scrollableTrack);
     }
 
     innerEl.scrollTop = topPos;
@@ -627,7 +629,7 @@
 
   /**
    * Called upon container mousewheel.
-   * 
+   *
    * @access private
    * @param {WheelEvent} event
    * @param {number} y
@@ -657,7 +659,7 @@
     /**
      * Checks if scrolling with the mousewheel moves the scrollbar
      * all the way up or all the way down.
-     * 
+     *
      * @param {type} paneHeight
      * @param {type} scrollHeight
      * @param {type} scrollTop
@@ -665,7 +667,7 @@
      */
     function hasReachedBoundary(paneHeight, scrollHeight, scrollTop) {
       if ((y > 0 && 0 === scrollTop) ||
-              (y < 0 && (scrollTop + Math.ceil(paneHeight) === scrollHeight))) {
+        (y < 0 && (scrollTop + Math.ceil(paneHeight) === scrollHeight))) {
         return true;
       } else {
         return false;
@@ -681,7 +683,7 @@
 
   /**
    * Cross-browser inheritance.
-   * 
+   *
    * @access private
    * @param {Function} ctorA constructor
    * @param {Function} ctorB constructor we inherit from
@@ -702,10 +704,10 @@
   function scrollbarSize() {
     if (size === undefined) {
       var div = $(
-              '<div class="antiscroll-inner" style="width:50px;height:50px;overflow-y:scroll;'
-              + 'position:absolute;top:-200px;left:-200px;"><div style="height:100px;width:100%"/>'
-              + '</div>'
-              );
+          '<div class="antiscroll-inner" style="width:50px;height:50px;overflow-y:scroll;'
+          + 'position:absolute;top:-200px;left:-200px;"><div style="height:100px;width:100%"/>'
+          + '</div>'
+      );
 
       $('body').append(div);
       var w1 = $(div).innerWidth();
