@@ -1,9 +1,8 @@
 {
-  "name": "antiscroll-2",
-  "main": [
-    "antiscroll.css",
-    "antiscroll.js"
-  ],
+  "dependencies": {
+    "jquery": "2.1.4",
+    "jquery-mousewheel": "3.1.13"
+  },
   "ignore": [
     ".gitignore",
     ".idea",
@@ -21,22 +20,21 @@
     "README.md",
     "test"
   ],
-  "dependencies": {
-    "jquery": "~2.1",
-    "jquery-mousewheel": "~3.1"
-  },
-  "devDependencies": {
-    "lesshat": "3.0.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/welovecoding/antiscroll-2"
-  },
   "keywords": [
     "antiscroll",
     "jquery",
     "mac-osx",
     "plugin",
     "scrollbars"
-  ]
+  ],
+  "license": "GPL-3.0",
+  "main": [
+    "antiscroll.css",
+    "antiscroll.js"
+  ],
+  "name": "antiscroll-2",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wireapp/antiscroll-2"
+  }
 }

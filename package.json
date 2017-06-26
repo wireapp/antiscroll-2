@@ -1,0 +1,20 @@
+{
+  "author": "Wire",
+  "dependencies": {
+    "less": "2.7.2",
+    "lesshat": "4.1.0"
+  },
+  "homepage": "https://github.com/wireapp/antiscroll-2#readme",
+  "license": "GPL-3.0",
+  "name": "antiscroll-2",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wireapp/antiscroll-2.git"
+  },
+  "scripts": {
+    "build": "lessc ./src/less/antiscroll-2.less ./dist/antiscroll-2.css",
+    "postinstall": "bower install"
+  },
+  "version": "1.0.0"
+}

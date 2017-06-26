@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Dependencies -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
     <!-- Antiscroll 2 -->
     <link rel="stylesheet" href="dist/antiscroll-2.css" />
@@ -19,7 +19,7 @@
       }
     </style>
     <script>
-      $(window).load(function () {
+      $(window).on("load", function () {
         $('#container').antiscroll({
           debug: true,
           autoHide: false,

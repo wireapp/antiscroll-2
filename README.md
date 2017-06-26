@@ -1,3 +1,11 @@
+-----
+
+:warning: *THIS PROJECT IS NOT OFFICIALLY SUPPORTED! ALL CODE IN HERE IS
+IN DEVELOPMENT AND LIKELY TO CHANGE WITHOUT WARNING. USE AT YOUR OWN
+RISK.* :warning:
+
+-----
+
 antiscroll-2
 ============
 
@@ -30,3 +38,9 @@ All possible options:
   notOnMacintosh: <boolean>
 }
 ```
+
+## Build Instructions
+
+1. Run `npm install`
+2. Run `npm run build`
+3. Test [index.html](./index.html)

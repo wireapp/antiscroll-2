@@ -12,9 +12,9 @@
   -moz-background-clip: padding;
   border-radius: 7px;
   background-clip: padding-box;
-  -webkit-box-shadow: 0 0 1px #ffffff;
-  -moz-box-shadow: 0 0 1px #ffffff;
-  box-shadow: 0 0 1px #ffffff;
+  -webkit-box-shadow: 0 0 1px #fff;
+  -moz-box-shadow: 0 0 1px #fff;
+  box-shadow: 0 0 1px #fff;
   position: absolute;
   opacity: 0;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
