@@ -8,7 +8,6 @@
   "homepage": "https://github.com/wireapp/antiscroll-2#readme",
   "license": "GPL-3.0",
   "name": "@wireapp/antiscroll-2",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wireapp/antiscroll-2.git"
