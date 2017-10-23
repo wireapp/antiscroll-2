@@ -1,5 +1,5 @@
 {
-  "dependencies": {
+  "devDependencies": {
     "bower": "1.8.2",
     "less": "2.7.2",
     "lesshat": "4.1.0"
@@ -17,5 +17,5 @@
     "build": "lessc ./src/less/antiscroll-2.less ./dist/antiscroll-2.css",
     "start": "bower install && npm run build"
   },
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
