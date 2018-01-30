@@ -1,8 +1,9 @@
 {
   "devDependencies": {
     "bower": "1.8.2",
-    "less": "2.7.2",
-    "lesshat": "4.1.0"
+    "less": "2.7.3",
+    "lesshat": "4.1.0",
+    "opn-cli": "3.1.0"
   },
   "files": [
     "dist/"
@@ -15,7 +16,7 @@
   },
   "scripts": {
     "build": "lessc ./src/less/antiscroll-2.less ./dist/antiscroll-2.css",
-    "start": "bower install && npm run build"
+    "start": "bower install && npm run build && opn index.html"
   },
-  "version": "1.2.9"
+  "version": "1.3.0"
 }

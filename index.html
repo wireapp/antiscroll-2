@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+    <script src="bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
     <!-- Antiscroll 2 -->
     <link rel="stylesheet" href="dist/antiscroll-2.css" />
     <script src="dist/antiscroll-2.js"></script>
@@ -19,7 +19,7 @@
       }
     </style>
     <script>
-      $(window).on("load", function () {
+      $(window).on('load', function () {
         $('#container').antiscroll({
           debug: true,
           autoHide: false,
@@ -191,5 +191,13 @@
         </ul>
       </div>
     </div>
+    <p id="jquery-version"></p>
+    <p id="jquery-mousewheel-version"></p>
+    <script>
+      $(document).ready(function(){
+        $('#jquery-version').text(`Using jQuery v${$().jquery}`);
+        $('#jquery-mousewheel-version').text(`Using jQuery Mouse Wheel Plugin v${$.event.special.mousewheel.version}`);
+      });
+    </script>
   </body>
 </html>
