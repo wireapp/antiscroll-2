@@ -150,7 +150,7 @@
 
     if (this.x) {
       if (!this.horizontal && needHScroll) {
-        this.horizontal = new Scrollbar.Horizontal(this);
+        this.horizontal = (this.options.notHorizontal) ? undefined : new Scrollbar.Horizontal(this);
       } else if (this.horizontal && !needHScroll) {
         this.horizontal.destroy();
         this.horizontal = null;
@@ -161,7 +161,7 @@
 
     if (this.y) {
       if (!this.vertical && needVScroll) {
-        this.vertical = new Scrollbar.Vertical(this);
+        this.vertical = (this.options.notVertical) ? undefined : new Scrollbar.Vertical(this);
       } else if (this.vertical && !needVScroll) {
         this.vertical.destroy();
         this.vertical = null;

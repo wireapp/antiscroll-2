@@ -20,27 +20,34 @@ Unofficial successor of [Antiscroll](https://github.com/LearnBoost/antiscroll) w
 - Documentation according to JSDoc 3
 - Various Antiscroll bug fixes
 
+## Usage
+
+```javascript
+$(element).antiscroll(options);
+```
+
 ## Options
 
-All possible options:
-
-```js
+```
 {
   autoHide: <boolean>
   autoResize: <boolean>
   autoWrap: <boolean>
   debug: <boolean>
   marginTop: <number>
-  padding: <number>
-  startBottom: <boolean>
+  notHorizontal: <boolean>
+  notVertical: <boolean>
+  notOnMacintosh: <boolean>
   notOnWindows: <boolean>
   onlyOnWindows: <boolean>
-  notOnMacintosh: <boolean>
+  padding: <number>
+  startBottom: <boolean>
 }
 ```
 
-## Build Instructions
+## Development
 
-1. Run `npm install`
-2. Run `npm run build`
-3. Test [index.html](./index.html)
+```bash
+npm install
+npm start
+```

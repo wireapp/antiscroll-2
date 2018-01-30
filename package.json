@@ -18,5 +18,5 @@
     "build": "lessc ./src/less/antiscroll-2.less ./dist/antiscroll-2.css",
     "start": "bower install && npm run build && opn index.html"
   },
-  "version": "1.3.0"
+  "version": "1.3.1"
 }
