@@ -525,11 +525,12 @@
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
 
     // If scrollbar would go beyond boundaries
-    if ((topPos + barHeight) > trackHeight) {
+    var targetedHeight = (topPos + barHeight);
+    if (targetedHeight > trackHeight) {
       if (this.pane.options.debug) {
-        console.warn('Scrollbar goes beyond boundaries. Offset will be adjusted.');
+        console.warn(`Vertical scrollbar wants to go beyond boundaries (${targetedHeight}px > ${trackHeight}px). Offset will be adjusted...`);
       }
-      var overlap = (topPos + barHeight) - trackHeight;
+      var overlap = targetedHeight - trackHeight;
       topPos = topPos - overlap;
     }
 
