@@ -9,7 +9,7 @@
     "dist/"
   ],
   "license": "GPL-3.0",
-  "name": "antiscroll-2",
+  "name": "@wireapp/antiscroll-2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wireapp/antiscroll-2.git"
